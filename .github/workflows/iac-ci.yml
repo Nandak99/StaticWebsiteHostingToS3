@@ -2,7 +2,7 @@ name: iac-scan-ci
 on:
  workflow_dispatch: {}
 jobs:
- iac-ci-scan:
+ iac-ci-scan-kicks:
   runs-on: ubuntu-latest
   steps:
    - name: checkout
@@ -13,4 +13,15 @@ jobs:
           path: 'cloudformation/module3'
           profiling: MEM
           output_path: myResults/
+ iac-ci-scan-checkov:
+  runs-on: ubuntu-latest
+  steps:
+   - name: checkout
+     uses: actions/checkout@v3
+   - name: Test with Checkov
+     id: checkov
+     uses: bridgecrewio/checkov-action@master
+     with:
+       directory: cloudformation/module3
+       framework: cloudformation
   
