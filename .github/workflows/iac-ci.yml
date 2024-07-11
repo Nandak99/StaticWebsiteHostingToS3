@@ -6,7 +6,7 @@ jobs:
   runs-on: ubuntu-latest
   steps:
    - name: checkout
-     uses: actions/checkout@mian
+     uses: actions/checkout@v3
    - name: kicks analysis
      uses: checkmarx/kics-github-action@v2.1.0
      with:
