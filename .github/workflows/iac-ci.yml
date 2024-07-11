@@ -52,5 +52,9 @@ jobs:
        python3 json_to_csv.py result.json result.csv
 
        cat result.csv
-    
+   - name: artifacts
+     uses: actions/upload-artifact@v4
+     with:
+      name: trivy results
+      path: ./result.csv
   
