@@ -48,6 +48,9 @@ jobs:
      id: trivy
      run: |
        curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.50.4
-       trivy config --format table  ./cloudformation/module3
+       trivy config --format json  ./cloudformation/module3 > result.json
+       python3 json_to_csv.py result.json result.csv
+
+       cat result.csv
     
   
