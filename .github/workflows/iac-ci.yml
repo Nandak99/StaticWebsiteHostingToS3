@@ -11,8 +11,14 @@ jobs:
      uses: checkmarx/kics-github-action@v2.1.0
      with:
           path: 'cloudformation/module3'
-          profiling: MEM
-          output_path: myResults/
+          output_formats: 'json,sarif'
+          output_path: results-dir
+
+   - name: Upload SARIF file
+     if: success() || failure()
+     uses: github/codeql-action/upload-sarif@v3
+     with:
+          sarif_file: results-dir/results.sarif
  iac-ci-scan-checkov:
   runs-on: ubuntu-latest
   steps:
@@ -24,4 +30,18 @@ jobs:
      with:
        directory: cloudformation/module3
        framework: cloudformation
+       output_format: cli,sarif
+       output_file_path: console,results.sarif
+        
+   - name: Upload SARIF file
+     uses: github/codeql-action/upload-sarif@v2
+     
+     # Results are generated only on a success or failure
+     # this is required since GitHub by default won't run the next step
+     # when the previous one has failed. Security checks that do not pass will 'fail'.
+     # An alternative is to add `continue-on-error: true` to the previous step
+     # Or 'soft_fail: true' to checkov.
+     if: success() || failure()
+     with:
+       sarif_file: results.sarif
   
