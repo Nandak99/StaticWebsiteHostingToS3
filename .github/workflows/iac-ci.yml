@@ -48,10 +48,38 @@ jobs:
      id: trivy
      run: |
        curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.50.4
-       trivy config --format json  ./cloudformation/module3 > result.json
+       trivy config --format json  --output result.json ./cloudformation/module3 
        python3 json_to_csv.py result.json result.csv
 
        cat result.csv
+
+   - name: Convert JSON to Markdown
+     id: convert
+     run: |
+        echo '```json' > trivy_report.md
+        cat result.json >> trivy_report.md
+        echo '```' >> trivy_report.md
+
+   - name: Upload Trivy report to workflow summary
+     if: always()
+     uses: actions/github-script@v5
+     with:
+      script: |
+          const fs = require('fs');
+          const report = fs.readFileSync('trivy_report.md', 'utf8');
+          github.rest.checks.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            name: 'Trivy IaC Scan Report',
+            head_sha: context.sha,
+            status: 'completed',
+            conclusion: 'neutral',
+            output: {
+              title: 'Trivy IaC Scan Report',
+              summary: 'Trivy scan results',
+              text: report
+            }
+          });
    - name: artifacts
      uses: actions/upload-artifact@v4
      with:
