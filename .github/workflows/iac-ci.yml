@@ -19,73 +19,73 @@ jobs:
    #   uses: github/codeql-action/upload-sarif@v3
    #   with:
    #        sarif_file: results-dir/results.sarif
- # iac-ci-scan-checkov:
- #  runs-on: ubuntu-latest
- #  steps:
- #   - name: checkout
- #     uses: actions/checkout@v3
- #   - name: Test with Checkov
- #     id: checkov
- #     uses: bridgecrewio/checkov-action@master
- #     with:
- #       directory: cloudformation/module3
- #       framework: cloudformation
- #       output_format: cli,sarif
- #       output_file_path: console,results.sarif
-        
- #   - name: Upload SARIF file
- #     uses: github/codeql-action/upload-sarif@v2
- #     if: success() || failure()
- #     with:
- #       sarif_file: results.sarif
-
- iac-ci-scan-trivy:
+ iac-ci-scan-checkov:
   runs-on: ubuntu-latest
   steps:
    - name: checkout
      uses: actions/checkout@v3
-   - name: install and Run Trivy scanner
-     run: |
-      curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.50.4
-      trivy config --format json  ./cloudformation/module2 > trivy_report.json
-
-   - name: Convert JSON to Markdown
-     id: convert
-     run: |
-        echo '```json' > trivy_report.md
-        cat trivy_report.json >> trivy_report.md
-        echo '```' >> trivy_report.md
-        # ls
-        # ls -al
-        # tree
-        # python3 json_to_csv.py trivy_report.json trivy_report.csv
-
-   - name: Upload Trivy report to workflow summary
-     if: always()
-     uses: actions/github-script@v7
+   - name: Test with Checkov
+     id: checkov
+     uses: bridgecrewio/checkov-action@master
      with:
-      script: |
-          const fs = require('fs');
-          const report = fs.readFileSync('trivy_report.md', 'utf8');
-          github.rest.checks.create({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            name: 'Trivy IaC Scan Report',
-            head_sha: context.sha,
-            status: 'completed',
-            conclusion: 'neutral',
-            output: {
-              title: 'Trivy IaC Scan Report',
-              summary: 'Trivy scan results',
-              text: report
-            }
-          });
-   - name: artifacts
-     uses: actions/upload-artifact@v4
-     with:
-      name: trivy results
-      path: |
-        trivy_report.json
-        trivy_report.md
+       directory: cloudformation/module3
+       framework: cloudformation
+       output_format: cli,sarif
+       output_file_path: console,results.sarif
+        
+   # - name: Upload SARIF file
+   #   uses: github/codeql-action/upload-sarif@v2
+   #   if: success() || failure()
+   #   with:
+   #     sarif_file: results.sarif
+
+ # iac-ci-scan-trivy:
+ #  runs-on: ubuntu-latest
+ #  steps:
+ #   - name: checkout
+ #     uses: actions/checkout@v3
+ #   - name: install and Run Trivy scanner
+ #     run: |
+ #      curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.50.4
+ #      trivy config --format json  ./cloudformation/module2 > trivy_report.json
+
+ #   - name: Convert JSON to Markdown
+ #     id: convert
+ #     run: |
+ #        echo '```json' > trivy_report.md
+ #        cat trivy_report.json >> trivy_report.md
+ #        echo '```' >> trivy_report.md
+ #        # ls
+ #        # ls -al
+ #        # tree
+ #        # python3 json_to_csv.py trivy_report.json trivy_report.csv
+
+ #   - name: Upload Trivy report to workflow summary
+ #     if: always()
+ #     uses: actions/github-script@v7
+ #     with:
+ #      script: |
+ #          const fs = require('fs');
+ #          const report = fs.readFileSync('trivy_report.md', 'utf8');
+ #          github.rest.checks.create({
+ #            owner: context.repo.owner,
+ #            repo: context.repo.repo,
+ #            name: 'Trivy IaC Scan Report',
+ #            head_sha: context.sha,
+ #            status: 'completed',
+ #            conclusion: 'neutral',
+ #            output: {
+ #              title: 'Trivy IaC Scan Report',
+ #              summary: 'Trivy scan results',
+ #              text: report
+ #            }
+ #          });
+ #   - name: artifacts
+ #     uses: actions/upload-artifact@v4
+ #     with:
+ #      name: trivy results
+ #      path: |
+ #        trivy_report.json
+ #        trivy_report.md
         
   
