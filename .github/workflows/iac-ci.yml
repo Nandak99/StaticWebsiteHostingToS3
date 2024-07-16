@@ -54,7 +54,9 @@ jobs:
         output: 'trivy_report.json'
         convert: 'csv'
 
-  
+   - run: |
+      ls -al 
+   
 
    
    # - name: artifacts
