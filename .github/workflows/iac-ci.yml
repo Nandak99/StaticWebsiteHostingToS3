@@ -53,6 +53,7 @@ jobs:
         format: 'github'
         output: 'trivy_report.txt'
         convert: 'csv'
+        github-pat: ${{ vars.TRIVY }}
 
    - run: |
       ls
