@@ -49,7 +49,7 @@ jobs:
      with:
        scan-type: config
        hide-progress: true
-       format: json
+       format: github
        output: trivy_report.json
 
    - name: Convert JSON to Markdown
