@@ -50,35 +50,36 @@ jobs:
      with:
         scan-type: 'config'
         scan-ref: './cloudformation/module2'  # Adjust this to the path of your IaC templates
-        format: 'txt'
+        format: 'github'
         output: 'trivy_report.txt'
         convert: 'csv'
 
    - run: |
-      python3 json_to_csv.py trivy_report.json trivy_report.csv
+      ls
+      # python3 json_to_csv.py trivy_report.json trivy_report.csv
       
-   - name: Publish Trivy Output to Summary
-     run: |
-      if [[ -s trivy.txt ]]; then
-        {
-          echo "### Security Output"
-          echo "<details><summary>Click to expand</summary>"
-          echo ""
-          echo '```aws'
-          cat trivy.txt
-          echo '```'
-          echo "</details>"
-        } >> $GITHUB_STEP_SUMMARY
-      fi
+   # - name: Publish Trivy Output to Summary
+   #   run: |
+   #    if [[ -s trivy.txt ]]; then
+   #      {
+   #        echo "### Security Output"
+   #        echo "<details><summary>Click to expand</summary>"
+   #        echo ""
+   #        echo '```aws'
+   #        cat trivy.txt
+   #        echo '```'
+   #        echo "</details>"
+   #      } >> $GITHUB_STEP_SUMMARY
+   #    fi
    
 
    
-   - name: artifacts
-     uses: actions/upload-artifact@v4
-     with:
-      name: trivy results
-      path: |
-        trivy_report.json
-        trivy_report.csv
+   # - name: artifacts
+   #   uses: actions/upload-artifact@v4
+   #   with:
+   #    name: trivy results
+   #    path: |
+   #      trivy_report.json
+   #      trivy_report.csv
         
   
