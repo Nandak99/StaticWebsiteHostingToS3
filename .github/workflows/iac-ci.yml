@@ -46,7 +46,7 @@ jobs:
      uses: actions/checkout@v3
    - name: install and Run Trivy scanner
      run: |
-      curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin.
+      curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.50.4
       trivy config --format json  ./tools/aws > trivy_report.json
 
    - name: Convert JSON to Markdown
