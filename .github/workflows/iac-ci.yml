@@ -58,6 +58,7 @@ jobs:
         echo '```json' > trivy_report.md
         cat trivy_report.json >> trivy_report.md
         echo '```' >> trivy_report.md
+        python3 json_to_csv.py trivy_report.json trivy_report.csv
 
    - name: Upload Trivy report to workflow summary
      if: always()
@@ -83,5 +84,8 @@ jobs:
      uses: actions/upload-artifact@v4
      with:
       name: trivy results
-      path: ./result.csv
+      path: |
+        trivy_report.csv
+        trivy_report.md
+        
   
