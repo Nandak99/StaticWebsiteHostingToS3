@@ -50,10 +50,10 @@ jobs:
      with:
         scan-type: 'config'
         scan-ref: './cloudformation/module2'  # Adjust this to the path of your IaC templates
-        format: 'github,sarif'
+        format: 'sarif'
         output: 'trivy_report.sarif'
         convert: 'csv'
-        github-pat: ${{ vars.TRIVY }}
+        # github-pat: ${{ vars.TRIVY }}
    - name: Upload Trivy scan results to GitHub Security tab
      uses: github/codeql-action/upload-sarif@v1
      with:
