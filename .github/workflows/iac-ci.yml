@@ -44,14 +44,13 @@ jobs:
   steps:
    - name: checkout
      uses: actions/checkout@v3
-   - name: Test with Checkov
-     id: trivy
-     run: |
-       curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.50.4
-       trivy iac --format json --output trivy_report.json config ./cloudformation/module3 
-       python3 json_to_csv.py trivy_report.json result.csv
-
-       cat result.csv
+   - name: Run Trivy scanner
+     uses: aquasecurity/trivy-action@0.20.0
+     with:
+       scan-type: config
+       hide-progress: false
+       scan-ref: ./cloudformation/module3
+       output: trivy_report.json
 
    - name: Convert JSON to Markdown
      id: convert
