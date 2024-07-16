@@ -49,6 +49,7 @@ jobs:
      with:
        scan-type: config
        hide-progress: false
+       format: json
        scan-ref: ./cloudformation/module3
        output: trivy_report.json
 
@@ -88,7 +89,7 @@ jobs:
      with:
       name: trivy results
       path: |
-        trivy_report.csv
+        trivy_report.json
         trivy_report.md
         
   
