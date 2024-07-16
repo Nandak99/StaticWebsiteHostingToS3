@@ -48,10 +48,11 @@ jobs:
      id: trivy
      uses: aquasecurity/trivy-action@0.20.0
      with:
-        scan-type: 'iac'
+        scan-type: 'config'
         input: './cloudformation/module2'  # Adjust this to the path of your IaC templates
         format: 'json'
         output: 'trivy_report.json'
+        convert: 'csv'
 
   
 
