@@ -55,16 +55,16 @@ jobs:
         convert: 'csv'
 
    - run: |
-      ls -al 
+      python3 json_to_csv.py trivy_report.json trivy_report.csv
    
 
    
-   # - name: artifacts
-   #   uses: actions/upload-artifact@v4
-   #   with:
-   #    name: trivy results
-   #    path: |
-   #      trivy_report.json
-   #      trivy_report.md
+   - name: artifacts
+     uses: actions/upload-artifact@v4
+     with:
+      name: trivy results
+      path: |
+        trivy_report.json
+        trivy_report.csv
         
   
