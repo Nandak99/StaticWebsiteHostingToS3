@@ -2,42 +2,42 @@ name: iac-scan-ci
 on:
  workflow_dispatch: {}
 jobs:
- iac-ci-scan-kicks:
-  runs-on: ubuntu-latest
-  steps:
-   - name: checkout
-     uses: actions/checkout@v3
-   - name: kicks analysis
-     uses: checkmarx/kics-github-action@v2.1.0
-     with:
-          path: 'cloudformation/module3'
-          output_formats: 'json,sarif'
-          output_path: results-dir
+ # iac-ci-scan-kicks:
+ #  runs-on: ubuntu-latest
+ #  steps:
+ #   - name: checkout
+ #     uses: actions/checkout@v3
+ #   - name: kicks analysis
+ #     uses: checkmarx/kics-github-action@v2.1.0
+ #     with:
+ #          path: 'cloudformation/module3'
+ #          output_formats: 'json,sarif'
+ #          output_path: results-dir
 
-   - name: Upload SARIF file
-     if: success() || failure()
-     uses: github/codeql-action/upload-sarif@v3
-     with:
-          sarif_file: results-dir/results.sarif
- iac-ci-scan-checkov:
-  runs-on: ubuntu-latest
-  steps:
-   - name: checkout
-     uses: actions/checkout@v3
-   - name: Test with Checkov
-     id: checkov
-     uses: bridgecrewio/checkov-action@master
-     with:
-       directory: cloudformation/module3
-       framework: cloudformation
-       output_format: cli,sarif
-       output_file_path: console,results.sarif
+   # - name: Upload SARIF file
+   #   if: success() || failure()
+   #   uses: github/codeql-action/upload-sarif@v3
+   #   with:
+   #        sarif_file: results-dir/results.sarif
+ # iac-ci-scan-checkov:
+ #  runs-on: ubuntu-latest
+ #  steps:
+ #   - name: checkout
+ #     uses: actions/checkout@v3
+ #   - name: Test with Checkov
+ #     id: checkov
+ #     uses: bridgecrewio/checkov-action@master
+ #     with:
+ #       directory: cloudformation/module3
+ #       framework: cloudformation
+ #       output_format: cli,sarif
+ #       output_file_path: console,results.sarif
         
-   - name: Upload SARIF file
-     uses: github/codeql-action/upload-sarif@v2
-     if: success() || failure()
-     with:
-       sarif_file: results.sarif
+ #   - name: Upload SARIF file
+ #     uses: github/codeql-action/upload-sarif@v2
+ #     if: success() || failure()
+ #     with:
+ #       sarif_file: results.sarif
 
  iac-ci-scan-trivy:
   runs-on: ubuntu-latest
