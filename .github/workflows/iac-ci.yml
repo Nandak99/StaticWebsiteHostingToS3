@@ -44,12 +44,10 @@ jobs:
   steps:
    - name: checkout
      uses: actions/checkout@v3
-   - name: Run Trivy scanner
-     uses: aquasecurity/trivy-action@0.20.0
-     with:
-       scan-type: fs
-       hide-progress: true
-       output: trivy_report.json
+   - name: install and Run Trivy scanner
+     run: |
+      curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin.
+      trivy config --format json  ./tools/aws > trivy_report.json
 
    - name: Convert JSON to Markdown
      id: convert
