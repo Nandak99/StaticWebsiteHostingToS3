@@ -50,37 +50,19 @@ jobs:
      with:
         scan-type: 'config'
         scan-ref: './cloudformation/module2'  # Adjust this to the path of your IaC templates
-        format: 'github'
-        output: 'trivy_report.txt'
+        format: 'github,sarif'
+        output: 'trivy_report.sarif'
         convert: 'csv'
         github-pat: ${{ vars.TRIVY }}
+   - name: Upload Trivy scan results to GitHub Security tab
+     uses: github/codeql-action/upload-sarif@v1
+     with:
+         sarif_file: 'trivy_report.sarif'
 
    - run: |
       ls
       # python3 json_to_csv.py trivy_report.json trivy_report.csv
       
-   # - name: Publish Trivy Output to Summary
-   #   run: |
-   #    if [[ -s trivy.txt ]]; then
-   #      {
-   #        echo "### Security Output"
-   #        echo "<details><summary>Click to expand</summary>"
-   #        echo ""
-   #        echo '```aws'
-   #        cat trivy.txt
-   #        echo '```'
-   #        echo "</details>"
-   #      } >> $GITHUB_STEP_SUMMARY
-   #    fi
-   
-
-   
-   # - name: artifacts
-   #   uses: actions/upload-artifact@v4
-   #   with:
-   #    name: trivy results
-   #    path: |
-   #      trivy_report.json
-   #      trivy_report.csv
+  
         
   
