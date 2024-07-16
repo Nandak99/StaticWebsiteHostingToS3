@@ -48,9 +48,8 @@ jobs:
      uses: aquasecurity/trivy-action@0.20.0
      with:
        scan-type: config
-       hide-progress: false
+       hide-progress: true
        format: json
-       scan-ref: ./cloudformation/module3
        output: trivy_report.json
 
    - name: Convert JSON to Markdown
